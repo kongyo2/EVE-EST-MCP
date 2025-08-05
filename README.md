@@ -2,6 +2,10 @@
 
 [![smithery badge](https://smithery.ai/badge/@kongyo2/eve-est-mcp)](https://smithery.ai/server/@kongyo2/eve-est-mcp)
 
+<a href="https://glama.ai/mcp/servers/@kongyo2/EVE-EST-MCP">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@kongyo2/EVE-EST-MCP/badge" alt="EVE Online EST Server MCP server" />
+</a>
+
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kongyo2/EVE-EST-MCP)
 
 An MCP server for EVE Online that provides EVE Server Time (EST) information and downtime calculations.
