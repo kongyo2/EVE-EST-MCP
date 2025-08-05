@@ -39,7 +39,7 @@ The `timeSource` field indicates whether the time was obtained from the system c
 To get started, clone the repository and install the dependencies.
 
 ```bash
-git clone https://github.com/your-username/eve-online-est-mcp-server.git
+git clone https://github.com/kongyo2/EVE-EST-MCP.git
 cd eve-online-est-mcp-server
 npm install
 npm run dev
