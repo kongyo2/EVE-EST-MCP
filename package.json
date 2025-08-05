@@ -1,5 +1,5 @@
 {
-  "name": "fastmcp-boilerplate",
+  "name": "eve-online-est-mcp-server",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
@@ -13,16 +13,19 @@
   "keywords": [
     "fastmcp",
     "mcp",
-    "boilerplate"
+    "eve-online",
+    "est",
+    "server-time",
+    "downtime"
   ],
   "repository": {
-    "url": "https://github.com/punkpeye/fastmcp-boilerplate"
+    "url": "https://github.com/your-username/eve-online-est-mcp-server"
   },
-  "author": "Frank Fiegel <frank@glama.ai>",
-  "homepage": "https://glama.ai/mcp",
+  "author": "Your Name <your.email@example.com>",
+  "homepage": "https://github.com/your-username/eve-online-est-mcp-server",
   "type": "module",
   "license": "MIT",
-  "description": "A boilerplate for FastMCP",
+  "description": "MCP server for EVE Online EST (EVE Server Time) with downtime calculations",
   "dependencies": {
     "fastmcp": "^1.27.3",
     "zod": "^3.24.4"
