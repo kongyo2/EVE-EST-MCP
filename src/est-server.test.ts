@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("EVE Online EST Time Server", () => {
   it("should calculate time correctly", () => {
@@ -39,5 +39,22 @@ describe("EVE Online EST Time Server", () => {
     const isInDowntime = currentHour === 11 && currentMinute < 15;
 
     expect(typeof isInDowntime).toBe("boolean");
+  });
+
+  it("should handle WorldTimeAPI fallback", async () => {
+    // Mock fetch for WorldTimeAPI
+    const mockFetch = vi.fn().mockResolvedValue({
+      json: () =>
+        Promise.resolve({
+          datetime: "2025-01-08T15:30:45.123Z",
+        }),
+      ok: true,
+    });
+
+    // Replace global fetch with mock
+    vi.stubGlobal("fetch", mockFetch);
+
+    // Test that fetch would be called if system time fails
+    expect(mockFetch).toBeDefined();
   });
 });

@@ -1,4 +1,5 @@
 import { FastMCP } from "fastmcp";
+import fetch from "node-fetch";
 import { z } from "zod";
 
 const server = new FastMCP({
@@ -7,12 +8,29 @@ const server = new FastMCP({
 });
 
 /**
+ * Fetch current UTC time from WorldTimeAPI as fallback
+ */
+async function fetchTimeFromAPI(): Promise<Date> {
+  try {
+    const response = await fetch("https://worldtimeapi.org/api/timezone/UTC");
+    if (!response.ok) {
+      throw new Error(`API response not ok: ${response.status}`);
+    }
+    const data = (await response.json()) as { datetime: string };
+    return new Date(data.datetime);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to fetch time from API: ${errorMessage}`);
+  }
+}
+
+/**
  * Get current EVE Server Time (EST) and calculate time until server downtime
  * EVE Server Time is identical to UTC
  * Daily downtime: 11:00 to 11:15 UTC (EVE Server Time)
  */
-function getCurrentESTTime() {
-  const now = new Date();
+async function getCurrentESTTime() {
+  const { source: timeSource, time: now } = await getCurrentTime();
 
   // EVE Server Time is UTC
   const estTime = now.toISOString().replace("T", " ").substring(0, 19) + " EST";
@@ -48,6 +66,7 @@ function getCurrentESTTime() {
     isInDowntime,
     nextDowntimeStart:
       nextDowntime.toISOString().replace("T", " ").substring(0, 19) + " EST",
+    timeSource,
     timeUntilNextDowntime: isInDowntime
       ? "Server is currently in downtime"
       : `${hoursUntilDowntime}h ${minutesUntilDowntime}m`,
@@ -55,17 +74,53 @@ function getCurrentESTTime() {
   };
 }
 
+/**
+ * Get current time with fallback to WorldTimeAPI
+ */
+async function getCurrentTime(): Promise<{ source: string; time: Date }> {
+  try {
+    const now = new Date();
+    // Check if system time is valid (not NaN and reasonable)
+    if (isNaN(now.getTime()) || now.getFullYear() < 2020) {
+      throw new Error("System time appears invalid");
+    }
+    return { source: "system", time: now };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn(
+      "System time unavailable, falling back to WorldTimeAPI:",
+      errorMessage,
+    );
+    const apiTime = await fetchTimeFromAPI();
+    return { source: "worldtimeapi", time: apiTime };
+  }
+}
+
 server.addTool({
   annotations: {
-    openWorldHint: false, // This tool doesn't interact with external systems
+    openWorldHint: true, // May use external API as fallback
     readOnlyHint: true, // This tool doesn't modify anything
     title: "Get Current EVE Server Time",
   },
   description:
-    "Get current EVE Server Time (EST) which is identical to UTC, and calculate time until next server downtime. EVE Online servers go offline daily from 11:00 to 11:15 EST (UTC) for maintenance.",
+    "Get current EVE Server Time (EST) which is identical to UTC, and calculate time until next server downtime. EVE Online servers go offline daily from 11:00 to 11:15 EST (UTC) for maintenance. Uses system time with WorldTimeAPI as fallback.",
   execute: async () => {
-    const timeInfo = getCurrentESTTime();
-    return JSON.stringify(timeInfo, null, 2);
+    try {
+      const timeInfo = await getCurrentESTTime();
+      return JSON.stringify(timeInfo, null, 2);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      return JSON.stringify(
+        {
+          error: "Failed to get current time",
+          message: errorMessage,
+          timestamp: new Date().toISOString(),
+        },
+        null,
+        2,
+      );
+    }
   },
   name: "getCurrentESTTime",
   parameters: z.object({}),

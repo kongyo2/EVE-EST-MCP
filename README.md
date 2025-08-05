@@ -10,6 +10,7 @@ EVE Server Time (EST) is identical to UTC and is the standard time used across a
 - **Downtime Information**: Daily server maintenance occurs from 11:00 to 11:15 EST (UTC)
 - **Time Until Downtime**: Calculates hours and minutes until the next server downtime
 - **Downtime Status**: Indicates if the server is currently in downtime
+- **Reliable Time Source**: Uses system time with WorldTimeAPI (worldtimeapi.org) as fallback for maximum reliability
 
 ## Tool: getCurrentESTTime
 
@@ -22,9 +23,12 @@ This tool provides comprehensive EVE Online server time information:
   "isInDowntime": false,
   "downtimeWindow": "11:00 to 11:15 EST (UTC)",
   "timeUntilNextDowntime": "19h 29m",
-  "nextDowntimeStart": "2025-01-09 11:00:00 EST"
+  "nextDowntimeStart": "2025-01-09 11:00:00 EST",
+  "timeSource": "system"
 }
 ```
+
+The `timeSource` field indicates whether the time was obtained from the system clock (`"system"`) or from the WorldTimeAPI fallback (`"worldtimeapi"`).
 
 ## Development
 
