@@ -2,6 +2,8 @@
 
 [![smithery badge](https://smithery.ai/badge/@kongyo2/eve-est-mcp)](https://smithery.ai/server/@kongyo2/eve-est-mcp)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/kongyo2/EVE-EST-MCP)
+
 An MCP server for EVE Online that provides EVE Server Time (EST) information and downtime calculations.
 
 EVE Server Time (EST) is identical to UTC and is the standard time used across all EVE Online servers. This server provides current EST time and calculates time remaining until the next daily server downtime.
