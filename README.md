@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/kongyo2-eve-est-mcp-badge.png)](https://mseep.ai/app/kongyo2-eve-est-mcp)
+
 # EVE Online EST MCP Server
 
 [![smithery badge](https://smithery.ai/badge/@kongyo2/eve-est-mcp)](https://smithery.ai/server/@kongyo2/eve-est-mcp)
